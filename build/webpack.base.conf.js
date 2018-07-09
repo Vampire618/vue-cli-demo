@@ -48,14 +48,14 @@ module.exports = {//webpack基础配置的配置对象
       },
       {
         test: /\.js$/,
-        loader: 'babel-loader',
+        loader: 'babel-loader',//设置include 和 exclude是给loader指明哪些文件需要处理，那些不需要，可以优化打包事件
         include: [resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client')]
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: 'url-loader',
         options: {
-          limit: 10000,
+          limit: 10000,//url-loader的作用是将文件转化为base编码，10000字节，小于9.7kb的资源文件都会被转话，嵌入HTML/CSS/JS里，减少http请求数
           name: utils.assetsPath('img/[name].[hash:7].[ext]')
         }
       },
