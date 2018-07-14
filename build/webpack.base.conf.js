@@ -18,7 +18,7 @@ const createLintingRule = () => ({//创建一个eslint的loader
     emitWarning: !config.dev.showEslintErrorsInOverlay
   }
 })
-debugger;
+
 module.exports = {//webpack基础配置的配置对象
   context: path.resolve(__dirname, '../'),//设定webpack上下文运行环境,默认使用当前目录
   entry: {//如果项目中有多个入口，比如多页应用，就在这个entry里添加别的入口
@@ -32,7 +32,7 @@ module.exports = {//webpack基础配置的配置对象
       : config.dev.assetsPublicPath
   },
   resolve: {
-    extensions: ['.js', '.vue', 'css', 'scss', 'less', '.json'],//设置三种不需要添加后缀名直接引用的文件类型
+    extensions: ['.js', '.vue', 'css', 'scss', 'less', '.json'],//设置不需要添加后缀名直接引用的文件类型
     alias: {//设置别名
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
