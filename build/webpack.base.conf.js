@@ -32,7 +32,7 @@ module.exports = {//webpack基础配置的配置对象
       : config.dev.assetsPublicPath
   },
   resolve: {
-    extensions: ['.js', '.vue', '.json'],//设置三种不需要添加后缀名直接引用的文件类型
+    extensions: ['.js', '.vue', 'css', 'scss', 'less', '.json'],//设置三种不需要添加后缀名直接引用的文件类型
     alias: {//设置别名
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
