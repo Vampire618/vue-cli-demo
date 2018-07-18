@@ -15,7 +15,11 @@ const createLintingRule = () => ({//创建一个eslint的loader
   include: [resolve('src'), resolve('test')],
   options: {
     formatter: require('eslint-friendly-formatter'),
-    emitWarning: !config.dev.showEslintErrorsInOverlay
+    emitWarning: !config.dev.showEslintErrorsInOverlay,
+    outputReport: {
+      filePath: 'checkstyle.xml',
+      formatter: require('eslint/lib/formatters/checkstyle')
+    }
   }
 })
 
