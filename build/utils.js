@@ -45,6 +45,8 @@ exports.cssLoaders = function (options) {
 
     // Extract CSS when that option is specified
     // (which is the case during production build)
+    // the vue-style-loader inject CSS into the document as style tags
+    // ExtractTextPlugin,它会将所有的入口 chunk(entry chunks)中引用的 *.css移动到独立分离的 CSS 文件。
     if (options.extract) {
       return ExtractTextPlugin.extract({
         use: loaders,
@@ -79,7 +81,7 @@ exports.styleLoaders = function (options) {
       use: loader
     })
   }
-
+  debugger;
   return output
 }
 
