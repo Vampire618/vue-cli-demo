@@ -40,6 +40,7 @@ module.exports = {//webpack基础配置的配置对象
     alias: {//设置别名
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
+      'components': resolve('src/components')
     }
   },
   module: {
