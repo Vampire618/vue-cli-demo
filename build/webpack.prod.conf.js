@@ -25,15 +25,15 @@ const webpackConfig = merge(baseWebpackConfig, {
   devtool: config.build.productionSourceMap ? config.build.devtool : false,
   output: {
     path: config.build.assetsRoot,
-    filename: utils.assetsPath('js/[name].[chunkhash].js'),
-    chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
+    filename: utils.assetsPath('js/[name].file.[chunkhash].js'),
+    chunkFilename: utils.assetsPath('js/[id].chunk.[chunkhash].js')
   },
   plugins: [
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
     new webpack.DefinePlugin({
       'process.env': env
     }),
-    new UglifyJsPlugin({
+    /* new UglifyJsPlugin({
       uglifyOptions: {
         compress: {
           warnings: false
@@ -41,7 +41,7 @@ const webpackConfig = merge(baseWebpackConfig, {
       },
       sourceMap: config.build.productionSourceMap,
       parallel: true
-    }),
+    }), */
     // extract css into its own file
     new ExtractTextPlugin({
       filename: utils.assetsPath('css/[name].[contenthash].css'),
@@ -80,7 +80,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     // enable scope hoisting
     new webpack.optimize.ModuleConcatenationPlugin(),
     // split vendor js into its own file
-    new webpack.optimize.CommonsChunkPlugin({
+    /* new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
       minChunks (module) {
         // any required modules inside node_modules are extracted to vendor
@@ -92,21 +92,21 @@ const webpackConfig = merge(baseWebpackConfig, {
           ) === 0
         )
       }
-    }),
+    }), */
     // extract webpack runtime and module manifest to its own file in order to
     // prevent vendor hash from being updated whenever app bundle is updated
-    new webpack.optimize.CommonsChunkPlugin({
+    /* new webpack.optimize.CommonsChunkPlugin({// 
       name: 'manifest',
-      minChunks: Infinity
-    }),
+      minChunks: Infinity//当设置minChunk为Infinity的时候，它会把webpack生成的代码独立打包成一个模块，不会把任何其它代码打包进去
+    }), */
     // This instance extracts shared chunks from code splitted chunks and bundles them
     // in a separate chunk, similar to the vendor chunk
     // see: https://webpack.js.org/plugins/commons-chunk-plugin/#extra-async-commons-chunk
     new webpack.optimize.CommonsChunkPlugin({
       name: 'app',
-      async: 'vendor-async',
+      async: 'vendor-async',//创建异步的公共代码块
       children: true,
-      minChunks: 3
+      minChunks: 3//要提取的公共代码出现的最少次数
     }),
 
     // copy custom static assets

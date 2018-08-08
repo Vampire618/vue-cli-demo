@@ -2,6 +2,7 @@
   <div class="header">
     <div class="header-container">
       <div class="header-nav">header compo</div>
+      <div class="header-nav">{{msg}}</div>
     </div>
   </div>
 </template>
@@ -11,7 +12,7 @@ export default {
   name: 'headTop',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Welcome to Your Vue.js Apps'
     }
   }
 }
