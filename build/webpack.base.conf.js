@@ -26,7 +26,9 @@ const createLintingRule = () => ({//创建一个eslint的loader
 module.exports = {//webpack基础配置的配置对象
   context: path.resolve(__dirname, '../'),//设定webpack上下文运行环境,默认使用当前目录
   entry: {//如果项目中有多个入口，比如多页应用，就在这个entry里添加别的入口
-    app: './src/main.js'
+    // app: './src/main.js'
+    entryA: './src/demo/entryA.js',
+    // entryB: './src/demo/entryB.js'
   },
   output: {
     path: config.build.assetsRoot,

@@ -21,18 +21,42 @@ const webpackConfig = merge(baseWebpackConfig, {
       usePostCSS: true
     })
   },
-  //此选项控制是否生成，以及如何生成 source map
-  devtool: config.build.productionSourceMap ? config.build.devtool : false,
+  devtool: config.build.productionSourceMap ? config.build.devtool : false,  //devtool 控制是否生成，以及如何生成 source map
   output: {
     path: config.build.assetsRoot,
-    filename: utils.assetsPath('js/[name].file.[chunkhash].js'),
+    filename: utils.assetsPath('js/[name].[id].[chunkhash].js'),
     chunkFilename: utils.assetsPath('js/[id].chunk.[chunkhash].js')
   },
   plugins: [
-    // http://vuejs.github.io/vue-loader/en/workflow/production.html
-    new webpack.DefinePlugin({
-      'process.env': env
+    // This instance extracts shared chunks from code splitted chunks and bundles them
+    // in a separate chunk, similar to the vendor chunk
+    // 提取异步模块，如果好几个模块是异步加载的
+    // 就提取这些异步加载的模块之间的公共代码
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'app',
+      async: 'vendor-async',//创建异步的公共代码块
+      children: true,
+      minChunks: 2//要提取的公共代码出现的最少次数
     }),
+    // 打包所有第三方依赖的js代码
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      minChunks (module) {
+        return (
+          module.resource &&
+          /\.js$/.test(module.resource) &&
+          module.resource.indexOf(
+            path.join(__dirname, '../node_modules')
+          ) === 0
+        )
+      }
+    }),
+    //打包webpack runtime(manifest)
+    new webpack.optimize.CommonsChunkPlugin({// 
+      name: 'manifest',
+      minChunks: Infinity//当设置minChunk为Infinity的时候，它会把webpack生成的代码独立打包成一个模块，不会把任何其它代码打包进去
+    }),
+    //压缩js代码
     /* new UglifyJsPlugin({
       uglifyOptions: {
         compress: {
@@ -42,6 +66,9 @@ const webpackConfig = merge(baseWebpackConfig, {
       sourceMap: config.build.productionSourceMap,
       parallel: true
     }), */
+    new webpack.DefinePlugin({
+      'process.env': env
+    }),
     // extract css into its own file
     new ExtractTextPlugin({
       filename: utils.assetsPath('css/[name].[contenthash].css'),
@@ -79,36 +106,6 @@ const webpackConfig = merge(baseWebpackConfig, {
     new webpack.HashedModuleIdsPlugin(),
     // enable scope hoisting
     new webpack.optimize.ModuleConcatenationPlugin(),
-    // split vendor js into its own file
-    /* new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      minChunks (module) {
-        // any required modules inside node_modules are extracted to vendor
-        return (
-          module.resource &&
-          /\.js$/.test(module.resource) &&
-          module.resource.indexOf(
-            path.join(__dirname, '../node_modules')
-          ) === 0
-        )
-      }
-    }), */
-    // extract webpack runtime and module manifest to its own file in order to
-    // prevent vendor hash from being updated whenever app bundle is updated
-    /* new webpack.optimize.CommonsChunkPlugin({// 
-      name: 'manifest',
-      minChunks: Infinity//当设置minChunk为Infinity的时候，它会把webpack生成的代码独立打包成一个模块，不会把任何其它代码打包进去
-    }), */
-    // This instance extracts shared chunks from code splitted chunks and bundles them
-    // in a separate chunk, similar to the vendor chunk
-    // see: https://webpack.js.org/plugins/commons-chunk-plugin/#extra-async-commons-chunk
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'app',
-      async: 'vendor-async',//创建异步的公共代码块
-      children: true,
-      minChunks: 3//要提取的公共代码出现的最少次数
-    }),
-
     // copy custom static assets
     new CopyWebpackPlugin([
       {
